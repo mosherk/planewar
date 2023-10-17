@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>飞机大战</title>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+    canvas {
+      border: 1px solid red;
+      /* margin: 0 auto; */
+    }
+    #stage {
+      width: 480px;
+      height: 650px;
+      margin: auto;
+    }
+  </style>
+</head>
+<body>
+  <div id="stage">
+    <canvas id="canvas" width="480" height="650"></canvas>
+  </div>
+
+  <script>
+    // 1.让画布能够绘制图片
+    //  1.1 找到这个画布
+    const canvas = document.querySelector('#canvas')
+    //  1.2 利用这个画布初始化一个2D画笔
+    const context = canvas.getContext("2d")
+    // 2.加载这张图片 图片加载/初始化过程是 异步的
+    // 所以绘制的速度优于加载，空的
+    const bg = new Image();
+    bg.src = "/img/background.jpg"
+    // 当图片加载完毕后，再去绘制背景
+    /* 
+     eventName 事件名称
+     callback 该事件执行完毕后的回调函数
+    */
+    bg.addEventListener('load',() => {
+      /* 
+      Iamge 加载的图片的对象
+      dX 图片开始绘制的左上角的横坐标
+      dY 图片开始绘制的左上角的纵坐标
+      dWidth 图片在canvas绘制的宽度（缺省值表示绘制到整张canvas对象中
+      dHeight 图片在canvas绘制的高度（缺省值表示绘制到整张canvas对象中
+      */
+      // 用画笔绘制图片
+      context.drawImage(bg, 0, 0, 480, 650);
+    })
+  </script>
+</body>
+</html>

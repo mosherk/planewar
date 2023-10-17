@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>飞机大战</title>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+    canvas {
+      border: 1px solid red;
+      /* margin: 0 auto; */
+    }
+    #stage {
+      width: 480px;
+      height: 650px;
+      margin: auto;
+    }
+  </style>
+</head>
+<body>
+  <div id="stage">
+    <canvas id="canvas" width="480" height="650"></canvas>
+  </div>
+
+  <!-- 一般预先加载配置文件 提前加载资源内容提升性能-->
+  <script src="js/config.js"></script>
+  <script src="js/bullet.js"></script>
+  <script src="js/enemy.js"></script>
+  <script src="js/loading.js"></script>
+  <script src="js/sky.js"></script>
+  <script src="js/hero.js"></script>
+  <!-- 为了确保主程序完全没有问题，最后加载 -->
+  <script src="js/main.js"></script>
+  
+</body>
+</html>

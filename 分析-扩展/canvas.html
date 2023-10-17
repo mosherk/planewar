@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body {
+      background-color: black;
+    }
+    canvas{
+      background-color: white;
+    }
+  </style>
+</head>
+<body>
+  <canvas width="400" height="400" id="canvas"></canvas>
+  <script>
+    const canvas = document.getElementById('canvas')
+    const context = canvas.getContext('2d');
+    context.beginPath();
+    context.moveTo(0, 200.5);
+    context.lineTo(400, 200.5);
+    context.moveTo(200.5, 0);
+    context.lineTo(200.5, 400);
+    context.stroke()
+    context.font = "60px 微软雅黑";
+
+    // 文本水平方式
+    context.textAlign='center';
+    // 文本垂直对齐  --但是我的并没有居中，为什么
+    context.textBaseline='middle';
+    
+    context.fillText("田", 200, 200);
+    
+  </script>
+</body>
+</html>

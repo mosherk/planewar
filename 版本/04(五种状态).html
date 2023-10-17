@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>飞机大战</title>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+    canvas {
+      border: 1px solid red;
+      /* margin: 0 auto; */
+    }
+    #stage {
+      width: 480px;
+      height: 650px;
+      margin: auto;
+    }
+  </style>
+</head>
+<body>
+  <div id="stage">
+    <canvas id="canvas" width="480" height="650"></canvas>
+  </div>
+
+  <script>
+    // 初始化画布
+    const canvas = document.querySelector('#canvas')
+    const context = canvas.getContext("2d")
+    // 定义游戏的五种状态
+    // 开始
+    const START = 0;
+    // 开始时
+    const STARTING = 1;
+    // 运行时
+    const RUNNING = 2;
+    // 暂停时
+    const PAUSE = 3;
+    // 结束时
+    const END = 4;
+
+    // 2.初始化背景图 图片加载/初始化过程是 异步的
+    const bg = new Image();
+    bg.src = "/img/background.jpg"
+
+    // 初始化一个天空类
+    class Sky{
+      constructor(config) {
+        // 静态图像
+        this.bg = config.bg;
+        this.width = config.width;
+        this.height = config.height;
+        this.x1 = 0;
+        this.y1 = 0;
+        this.x2 = 0;
+        this.y2 = -this.height;
+        this.speed = config.speed;
+        // 最后更新时间
+        this.lasttime = new Date().getTime()
+      }
+      // 判断方法，判断这个时间天空是否需要移动y1 y2++
+      judge(){
+        let currentTime = new Date().getTime()
+        // currentTime10015 time10010 = 
+        if(currentTime - this.lasttime > this.speed){
+          this.y1++;
+          this.y2++;
+          // 时间更新
+          this.lasttime = currentTime
+        }
+        if(this.y2 === 0){
+          this.y1 = 0
+          this.y2 = -this.height;
+        }
+      }
+      // 绘图方法
+      paint(context){
+        context.drawImage(this.bg, this.x1, this.y1, this.width, this.height);
+        context.drawImage(this.bg, this.x2, this.y2, this.width, this.height);
+      }
+    }
+    // 天空类的配置项
+    const config = {
+      bg:bg, //右边的bg是上边的图片对象
+      width: 480,
+      height: 650,
+      // 10毫秒变化一次,数字越小速度越快。
+      speed:10,
+    }
+    // 初始化一个天空实例
+    const sky = new Sky(config);
+    // state表示游戏状态，取值必须是以上五种状态
+    let state = START;
+
+    // 图片加载完后的动作
+    bg.addEventListener('load',() => {
+      // 会实时渲染整个canvas对象，游戏进入不同状态渲染不同内容
+      setInterval(() => {
+        switch(state){
+          case START:
+            console.log('开始了');
+            // 渲染移动天空
+            sky.judge()
+            sky.paint(context)
+            // 渲染飞机大战logo
+            break;
+          case STARTING:
+            console.log('开始时');
+            // 渲染移动天空
+            sky.judge()
+            sky.paint(context)
+            // 飞机加载类 loading
+            break;
+          case RUNNING:
+            console.log('运行时');
+            // 渲染移动天空
+            sky.judge()
+            sky.paint(context)
+            // 渲染我方和敌方飞机
+            break;
+          case PAUSE:
+            console.log('暂停了');
+            // 渲染暂停图标
+            break;
+          case END:
+            console.log('结束了');
+            // 渲染game over
+            break;
+        }
+      }, 10);
+    })
+  </script>
+</body>
+</html>

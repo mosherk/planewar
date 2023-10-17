@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>飞机大战</title>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+    canvas {
+      border: 1px solid red;
+      /* margin: 0 auto; */
+    }
+    #stage {
+      width: 480px;
+      height: 650px;
+      margin: auto;
+    }
+  </style>
+</head>
+<body>
+  <div id="stage">
+    <canvas id="canvas" width="480" height="650"></canvas>
+  </div>
+
+  <script>
+    // 初始化画布
+    const canvas = document.querySelector('#canvas')
+    const context = canvas.getContext("2d")
+    // 2.初始化背景图 图片加载/初始化过程是 异步的
+    const bg = new Image();
+    bg.src = "/img/background.jpg"
+    // canvas 画布 绘制 bg对象的桌上角坐标
+    // 需要初始化来年改革坐标轴位置绘制两次bg
+    let x1 = 0;
+    let y1 = 0;
+    let x2 = 0;
+    let y2 = -650;
+    // 当图片加载完毕后，再去绘制背景
+    bg.addEventListener('load',() => {
+      // 用画笔绘制图片
+      /* 
+        callback:Function 回调函数
+        timeout ：number 每隔多长时间会调用函数
+      */
+      setInterval(() => {
+        context.drawImage(bg, x1, y1++, 480, 650);
+        context.drawImage(bg, x2, y2++, 480, 650);
+        // 当第二张图片也滚到最下面的时候，就需要让两张图片回到初始状态
+        if(y2 === 0){
+          y2 = -650;
+          y1 = 0
+        }
+      }, 10);
+    })
+  </script>
+</body>
+</html>

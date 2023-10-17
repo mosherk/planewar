@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>飞机大战</title>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+    canvas {
+      border: 1px solid red;
+      /* margin: 0 auto; */
+    }
+    #stage {
+      width: 480px;
+      height: 650px;
+      margin: auto;
+    }
+  </style>
+</head>
+<body>
+  <div id="stage">
+    <canvas id="canvas" width="480" height="650"></canvas>
+  </div>
+
+  <script>
+    // 初始化画布
+    const canvas = document.querySelector('#canvas')
+    const context = canvas.getContext("2d")
+    // 2.初始化背景图 图片加载/初始化过程是 异步的
+    const bg = new Image();
+    bg.src = "/img/background.jpg"
+    let x1 = 0;
+    let y1 = 0;
+    let x2 = 0;
+    let y2 = -650;
+
+    // ES6写法 更接近后台语言，本质和ES5无差别
+    // function Sky(){}
+    // 包括 静态属性 动态方法
+    // 静态属性：提供到一个constructor函数中 构造器函数 每当你new XXX() 总会先调用这个constnuctor()函效
+    class Sky{
+      constructor(config) {
+        // 静态属性
+        // 静态图像
+        this.bg = config.bg;
+        this.width = config.width;
+        this.height = config.height;
+        this.x1 = 0;
+        this.y1 = 0;
+        this.x2 = 0;
+        this.y2 = -this.height;
+        this.speed = config.speed;
+        // 最后更新时间
+        this.lasttime = new Date().getTime()
+      }
+      // 动态方法
+      // 判断方法，判断这个时间天空是否需要移动y1 y2++
+      // 拿到当前时间节点 速度节点 历史时间
+      // 当前时间-速度时间 和 历史时间比较
+      // 大于：需要移动；否则不需要移动
+      judge(){
+        let currentTime = new Date().getTime()
+        // currentTime10015 time10010 = 
+        if(currentTime - this.lasttime > this.speed){
+          this.y1++;
+          this.y2++;
+          // 时间更新
+          this.lasttime = currentTime
+        }
+        if(this.y2 === 0){
+          this.y1 = 0
+          this.y2 = -this.height;
+        }
+        console.log(currentTime);
+      }
+      // 绘图方法
+      paint(context){
+        context.drawImage(this.bg, this.x1, this.y1, this.width, this.height);
+        context.drawImage(this.bg, this.x2, this.y2, this.width, this.height);
+        
+      }
+    }
+    // 初始化/实例化一个Sky类型的sky变量
+    // 人类 是象的 只是一个象的念 只要项目中需要一个安际的人的时 
+    // 你就需要通过 new Person()的形式来实例化一个对象
+    const config = {
+      bg:bg, //右边的bg是上边的图片对象
+      width: 480,
+      height: 650,
+      // 10毫秒变化一次,数字越小速度越快。
+      speed:10,
+    }
+    const sky = new Sky(config);
+    console.log(sky);
+    // 加载图片
+    bg.addEventListener('load',() => {
+      // 保证页面的一个刷新率 一直在刷新，但实际移动位置的判断交给每个实例
+      setInterval(() => {
+        sky.judge()
+        sky.paint(context)
+      }, 10);
+    })
+  </script>
+</body>
+</html>
